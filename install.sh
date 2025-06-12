@@ -14,3 +14,10 @@ main() {
 }
 
 main
+
+if [ "$SHELL" != "$(which zsh)" ]; then
+  info_message "Mudando shell padrão para Zsh"
+  chsh -s "$(which zsh)"
+fi
+
+

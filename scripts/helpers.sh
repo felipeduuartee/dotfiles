@@ -44,6 +44,6 @@ install_python_packages() {
 
 create_symlinks() {
   info_message "Criando symlinks com stow..."
-  stow bash
   stow git
+  stow zsh
 }
