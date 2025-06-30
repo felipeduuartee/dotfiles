@@ -34,6 +34,12 @@ install_group() {
 
 install_python_packages() {
   local python_file="pkgs/python.pkgs.txt"
+
+  if ! command -v pip3 >/dev/null 2>&1; then
+    info_message "pip3 não encontrado. Instalando python3-pip..."
+    sudo apt install -y python3-pip
+  fi
+
   if [ -f "$python_file" ]; then
     info_message "Instalando pacotes Python com pip..."
     xargs -a "$python_file" pip3 install --user
@@ -42,8 +48,39 @@ install_python_packages() {
   fi
 }
 
+verify_stow() {
+  if ! command -v stow >/dev/null 2>&1; then
+    info_message "stow não encontrado. Instalando..."
+    sudo apt install -y stow
+  fi
+}
+
 create_symlinks() {
   info_message "Criando symlinks com stow..."
   stow git
   stow zsh
+}
+
+install_oh_my_zsh() {
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    info_message "Instalando Oh My Zsh..."
+    RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  else
+    info_message "Oh My Zsh já instalado."
+  fi
+}
+
+install_zsh_plugins() {
+  ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+  if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    info_message "Instalando plugin zsh-autosuggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+  fi
+
+  if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+    info_message "Instalando plugin zsh-syntax-highlighting..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+  fi
 }

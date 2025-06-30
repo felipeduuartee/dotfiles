@@ -14,19 +14,28 @@ setopt prompt_subst
 PROMPT='${debian_chroot:+($debian_chroot)}%F{green}%B%n@%m%b%f:%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f$ '
 zstyle ':vcs_info:git:*' formats '(%b)'
 
-# Plugins ativados
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+# Plugins padrão
+plugins=(git)
 
-# Carregar Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+[[ -f $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+  source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# ---- ALIASES E CONFIGS COPIADAS DO BASH ----
+[[ -f $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+  source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Carregar Oh My Zsh se instalado
+if [ -d "$ZSH" ]; then
+  source "$ZSH/oh-my-zsh.sh"
+else
+  echo "Oh My Zsh não encontrado em $ZSH. Execute a instalação ou rode novamente o script install.sh."
+fi
+
+#Carregar plugins adicionais se existirem
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 # Histórico
 HISTSIZE=1000
 HISTFILESIZE=2000
-
-# Evita linhas duplicadas no histórico
 setopt HIST_IGNORE_ALL_DUPS
 
 # LS com cores
@@ -57,6 +66,16 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# Biblioteca para compilar Python via pyenv
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
 # ---- ALIAS GIT ----
 alias gs='git status'
 alias ga='git add .'
@@ -79,21 +98,7 @@ alias gstash='git stash'
 alias gpop='git stash pop'
 alias gdf='git diff'
 
-# ---- FUNÇÕES GIT ----
-
-# Cria um novo branch e faz push imediatamente
+# ---- FUNÇÃO GIT: Cria e faz push do branch ----
 gnew() {
   git checkout -b "$1" && git push -u origin "$1"
 }
-
-
-# =========== pyenv ===========
-
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
