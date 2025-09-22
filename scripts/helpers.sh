@@ -42,7 +42,7 @@ install_python_packages() {
 
   if [ -f "$python_file" ]; then
     info_message "Instalando pacotes Python com pip..."
-    xargs -a "$python_file" pip3 install --user
+    xargs -a "$python_file" pip3 install --break-system-packages --user
   else
     error_message "Arquivo $python_file não encontrado!"
   fi

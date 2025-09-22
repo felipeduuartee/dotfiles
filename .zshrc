@@ -11,31 +11,39 @@ precmd() {
   print -Pn "\e]0;%n@%m: %~\a"
 }
 setopt prompt_subst
-PROMPT='${debian_chroot:+($debian_chroot)}%F{green}%B%n@%m%b%f:%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f$ '
+PROMPT='${debian_chroot:+($debian_chroot)}%F{yellow}%B%n@%M%b%f:%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f$ '
 zstyle ':vcs_info:git:*' formats '(%b)'
 
-# Plugins padrão
-plugins=(git)
+# Plugins ativados
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
-[[ -f $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
-  source $ZSH_CUSTOM/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# Carregar Oh My Zsh
+source $ZSH/oh-my-zsh.sh
 
-[[ -f $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
-  source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# ---- Forçar texto digitado sempre em amarelo ----
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[default]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[command]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[function]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[path]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow'
 
-# Carregar Oh My Zsh se instalado
-if [ -d "$ZSH" ]; then
-  source "$ZSH/oh-my-zsh.sh"
-else
-  echo "Oh My Zsh não encontrado em $ZSH. Execute a instalação ou rode novamente o script install.sh."
-fi
-
-#Carregar plugins adicionais se existirem
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+# ---- ALIASES E CONFIGS COPIADAS DO BASH ----
 
 # Histórico
 HISTSIZE=1000
 HISTFILESIZE=2000
+
+# Evita linhas duplicadas no histórico
 setopt HIST_IGNORE_ALL_DUPS
 
 # LS com cores
@@ -63,18 +71,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 export PATH="$PATH:$HOME/.local/bin"
 
 # rbenv
-#export PATH="$HOME/.rbenv/bin:$PATH"
-#eval "$(rbenv init - zsh)"
-
-# pyenv
-#export PYENV_ROOT="$HOME/.pyenv"
-#export PATH="$PYENV_ROOT/bin:$PATH"
-#eval "$(pyenv init --path)"
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-
-# Biblioteca para compilar Python via pyenv
-export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
 
 # ---- ALIAS GIT ----
 alias gs='git status'
@@ -98,7 +96,16 @@ alias gstash='git stash'
 alias gpop='git stash pop'
 alias gdf='git diff'
 
-# ---- FUNÇÃO GIT: Cria e faz push do branch ----
+# ---- FUNÇÕES GIT ----
 gnew() {
   git checkout -b "$1" && git push -u origin "$1"
 }
+
+# =========== pyenv ===========
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
