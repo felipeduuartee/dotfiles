@@ -33,7 +33,7 @@ jq
 net-tools
 dnsutils
 trash-cli
-neofetch
+fastfetch
 
 # Build/Python base
 build-essential
