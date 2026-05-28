@@ -1,0 +1,10 @@
+# Linguagens/ferramentas extras vistas no ambiente antigo
+nodejs
+npm
+ruby
+ruby-dev
+ruby-full
+openjdk-21-jdk
+ghc
+r-base
+r-base-dev

@@ -1,0 +1,26 @@
+# Segurança/pentest/forense usados no ambiente antigo
+adb
+binwalk
+checksec
+ffuf
+foremost
+hashcat
+john
+nmap
+radare2
+sqlite3
+tshark
+tcpdump
+wireshark
+whois
+socat
+ltrace
+strace
+steghide
+pngcheck
+upx-ucl
+unrar
+fcrackzip
+ent
+file
+libimage-exiftool-perl

@@ -1,0 +1,47 @@
+# Essenciais
+bash
+curl
+wget
+unzip
+zip
+tar
+ca-certificates
+gnupg
+lsb-release
+software-properties-common
+apt-transport-https
+
+# Dotfiles/shell
+git
+git-extras
+stow
+zsh
+zsh-autosuggestions
+zsh-syntax-highlighting
+
+# CLI utilitária
+nano
+vim
+htop
+fzf
+ripgrep
+bat
+tree
+xclip
+tmux
+jq
+net-tools
+dnsutils
+trash-cli
+neofetch
+
+# Build/Python base
+build-essential
+cmake
+make
+gdb
+gdbserver
+python3
+python3-pip
+python3-venv
+pipx

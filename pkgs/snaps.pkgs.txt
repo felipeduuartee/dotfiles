@@ -1,0 +1,7 @@
+# Snaps opcionais do ambiente antigo. Flatpak/Stremio não entram aqui.
+code --classic
+chromium
+ghidra
+spotify
+element-desktop
+logisim-evolution-snapcraft
